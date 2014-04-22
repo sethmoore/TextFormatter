@@ -33,6 +33,13 @@ namespace XamarinInterview
         private int _indent;
         private double _rowWidth;
         private bool _fill;
+        private double _pageWidth
+        {
+            get
+            {
+                return _page.Width - (_indent * 2.0);
+            }
+        }
 
         public TextFormatter ()
         {
@@ -47,9 +54,9 @@ namespace XamarinInterview
             _graphics = XGraphics.FromPdfPage(_page);
 
             _row = 0;
-            _indent = 0;
+            _indent = 1;
             _fontSize = 14;
-            _rowWidth = 0;
+            _rowWidth = _indentWidth;
             _fill = false;
         }
 
@@ -101,7 +108,7 @@ namespace XamarinInterview
             case ".regular":
                 _style = XFontStyle.Regular;
                 break;
-            case ".italic":
+            case ".italics":
                 if (_style == XFontStyle.Bold)
                     _style = XFontStyle.BoldItalic;
                 else
@@ -135,31 +142,64 @@ namespace XamarinInterview
             // Draw the text
             string[] words = text.Split(' ');
 
-            
+            // If we're filling, first we want to count the number of words per line
+            double width = _rowWidth;
+            int wordsPerLine = 0;
+            double spaceWidth = GetWidth(" ");
+            int begin = 0;
 
             for (int i = 0; i < words.Length; i++)
             {
-                Draw(words[i]);
-                if (_rowWidth>_indentWidth)
-                    Draw(" ");
+                width += GetWidth(words[i]);
+                wordsPerLine++;
+                // Once we've reached the end of a line we want to calculate the space we have to account for
+                if ((width + (spaceWidth * wordsPerLine)) >= _pageWidth)
+                {
+                    width -= GetWidth(words[i]);
+                    i--;
+
+                    if (_fill)
+                    {
+                        double diff = _pageWidth - width;
+                        spaceWidth = diff / Convert.ToDouble(wordsPerLine );
+                    }
+
+                    WriteLine(words, begin, i, spaceWidth);
+                    begin = i + 1;
+                    wordsPerLine = 0;
+                    width = _rowWidth;
+                    spaceWidth = GetWidth(" ");
+                }
             }
 
+            Write(words, begin, words.Length-1, spaceWidth);
+
+            if (text.EndsWith(" "))
+                _rowWidth += spaceWidth;
 
         }
 
-        private void Draw(string text)
+        private void WriteLine(string[] words, int begin, int end, double spacing)
         {
-            _graphics.DrawString(text, _font, XBrushes.Black,
-                    new XRect(_rowWidth, _row, GetWidth(text), GetCharHeight()),
-                    XStringFormats.TopLeft);
+            Write(words, begin, end, spacing);
+            _rowWidth = _indentWidth;
+            _row += GetCharHeight();
+        }
 
-            _rowWidth += GetWidth(text);
-            if (_rowWidth >= _page.Width - _indentWidth)
+        private void Write(string[] words, int begin, int end, double spacing)
+        {
+            for (int i = begin; i <= end; i++)
             {
-                _rowWidth = _indentWidth;
-                _row += GetCharHeight();
+                _graphics.DrawString(words[i], _font, XBrushes.Black,
+                        new XRect(_rowWidth, _row, GetWidth(words[i]), GetCharHeight()),
+                        XStringFormats.TopLeft);
+
+                _rowWidth += GetWidth(words[i]);
+                if (i != end)
+                    _rowWidth += spacing;
             }
         }
+
     }
 }
 
