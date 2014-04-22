@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextFormatter", "TextFormatter\TextFormatter.csproj", "{6F04A3E0-9870-43A3-9D0E-3E356752E964}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommandPromptClient", "CommandPromptClient\CommandPromptClient.csproj", "{1096A004-4ADA-48AD-BA8F-451AAAFEA2AA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1096A004-4ADA-48AD-BA8F-451AAAFEA2AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1096A004-4ADA-48AD-BA8F-451AAAFEA2AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1096A004-4ADA-48AD-BA8F-451AAAFEA2AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1096A004-4ADA-48AD-BA8F-451AAAFEA2AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F04A3E0-9870-43A3-9D0E-3E356752E964}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F04A3E0-9870-43A3-9D0E-3E356752E964}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F04A3E0-9870-43A3-9D0E-3E356752E964}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F04A3E0-9870-43A3-9D0E-3E356752E964}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		StartupItem = CommandPromptClient\CommandPromptClient.csproj
+	EndGlobalSection
+EndGlobal
