@@ -12,7 +12,7 @@ namespace CommandPromptClient
 				string line;
 				TextFormatter formatter = new TextFormatter ();
 				while ((line = file.ReadLine ()) != null) {
-					formatter.IssueCommand (file.ReadLine ());
+					formatter.IssueCommand (line);
 				}
 				formatter.Save (@"C:\Projects\C#\TextFormatter\document.pdf");
 			}

@@ -1,6 +1,5 @@
 C:\Projects\C#\TextFormatter\TextFormatter\bin\Debug\TextFormatter.dll
 C:\Projects\C#\TextFormatter\TextFormatter\bin\Debug\TextFormatter.pdb
 C:\Projects\C#\TextFormatter\TextFormatter\bin\Debug\PdfSharp.dll
-C:\Projects\C#\TextFormatter\TextFormatter\obj\Debug\TextFormatter.csprojResolveAssemblyReference.cache
 C:\Projects\C#\TextFormatter\TextFormatter\obj\Debug\TextFormatter.dll
 C:\Projects\C#\TextFormatter\TextFormatter\obj\Debug\TextFormatter.pdb
