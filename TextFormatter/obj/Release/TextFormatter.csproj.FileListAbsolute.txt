@@ -1,5 +1,0 @@
-C:\Projects\C#\TextFormatter\TextFormatter\bin\Release\TextFormatter.dll
-C:\Projects\C#\TextFormatter\TextFormatter\bin\Release\TextFormatter.pdb
-C:\Projects\C#\TextFormatter\TextFormatter\bin\Release\PdfSharp.dll
-C:\Projects\C#\TextFormatter\TextFormatter\obj\Release\TextFormatter.dll
-C:\Projects\C#\TextFormatter\TextFormatter\obj\Release\TextFormatter.pdb

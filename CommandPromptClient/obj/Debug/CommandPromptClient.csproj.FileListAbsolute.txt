@@ -1,8 +1,0 @@
-C:\Projects\C#\TextFormatter\CommandPromptClient\bin\Debug\CommandPromptClient.exe
-C:\Projects\C#\TextFormatter\CommandPromptClient\bin\Debug\CommandPromptClient.pdb
-C:\Projects\C#\TextFormatter\CommandPromptClient\bin\Debug\PdfSharp.dll
-C:\Projects\C#\TextFormatter\CommandPromptClient\bin\Debug\TextFormatter.dll
-C:\Projects\C#\TextFormatter\CommandPromptClient\bin\Debug\TextFormatter.pdb
-C:\Projects\C#\TextFormatter\CommandPromptClient\obj\Debug\CommandPromptClient.csprojResolveAssemblyReference.cache
-C:\Projects\C#\TextFormatter\CommandPromptClient\obj\Debug\CommandPromptClient.exe
-C:\Projects\C#\TextFormatter\CommandPromptClient\obj\Debug\CommandPromptClient.pdb
