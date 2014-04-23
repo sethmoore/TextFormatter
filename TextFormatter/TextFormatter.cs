@@ -14,7 +14,8 @@ namespace XamarinInterview
         private XGraphics _graphics;
         private double _fontSize;
         private XFontStyle _style;
-        private XFont _font
+
+        private XFont font
         {
             get
             {
@@ -22,7 +23,7 @@ namespace XamarinInterview
             }
         }
 
-        private double _indentWidth
+        private double indentWidth
         {
             get
             {
@@ -30,10 +31,31 @@ namespace XamarinInterview
             }
         }
         private double _row;
+        private double row
+        {
+            get
+            {
+                return _row;
+            }
+            set
+            {
+                if ((value + GetCharHeight()) > _page.Height)
+                {
+                    // Create a new empty page
+                    _page = _document.AddPage();
+                    _graphics = XGraphics.FromPdfPage(_page);
+                    _row = 0;
+                }
+                else
+                {
+                    _row = value;
+                }
+            }
+        }
         private int _indent;
         private double _rowWidth;
         private bool _fill;
-        private double _pageWidth
+        private double pageWidth
         {
             get
             {
@@ -53,10 +75,10 @@ namespace XamarinInterview
             // Get an XGraphics object for drawing
             _graphics = XGraphics.FromPdfPage(_page);
 
-            _row = 0;
             _indent = 1;
             _fontSize = 14;
-            _rowWidth = _indentWidth;
+            row = 0;
+            _rowWidth = indentWidth;
             _fill = false;
         }
 
@@ -67,23 +89,35 @@ namespace XamarinInterview
 
         private double GetWidth(string word)
         {
+            double result = 0;
+
+            for (int i = 0; i < word.Length; i++)
+            {
+                result += GetWidth(word[i]);
+            }
+            
+            return result;
+        }
+
+        private double GetWidth(char c)
+        {
             double result;
-            if (String.IsNullOrWhiteSpace(word))
+            if (String.IsNullOrWhiteSpace(c.ToString()))
             {
                 // Apparently in this library a space on it's own is 0 width, so we'll just wrap it in some 
                 // other characters and subtract them out
-                result = _graphics.MeasureString(String.Format("|{0}|", word), _font).Width - (2.0 * _graphics.MeasureString("|", _font).Width);
+                result = _graphics.MeasureString(String.Format("|{0}|", c.ToString()), font).Width - (2.0 * _graphics.MeasureString("|", font).Width);
             }
             else
             {
-                result = _graphics.MeasureString(word, _font).Width;
+                result = _graphics.MeasureString(c.ToString(), font).Width;
             }
             return result;
         }
 
         private double GetCharHeight()
         {
-            return _graphics.MeasureString("Ay", _font).Height;
+            return _graphics.MeasureString("Ay", font).Height;
         }
 
         public void IssueCommand(string command)
@@ -96,8 +130,8 @@ namespace XamarinInterview
                 _fontSize = 14;
                 break;
             case ".paragraph":
-                _row += (GetCharHeight() * 2);
-                _rowWidth = _indentWidth;
+                row += (GetCharHeight() * 2);
+                _rowWidth = indentWidth;
                 break;
             case ".fill":
                 _fill = true;
@@ -123,11 +157,11 @@ namespace XamarinInterview
             default:
                 if (command.StartsWith(".")) {
                     if (command.Contains (".indent")) {
-                        if (_rowWidth > _indentWidth)
-                            _row += (GetCharHeight() * 2);
+                        if (_rowWidth > indentWidth)
+                            row += (GetCharHeight() * 2);
 
                         _indent += int.Parse (command.Replace (".indent ", ""));
-                        _rowWidth = _indentWidth;
+                        _rowWidth = indentWidth;
                     }
                 } else {
                     // It's just text, so write it out
@@ -153,14 +187,14 @@ namespace XamarinInterview
                 width += GetWidth(words[i]);
                 wordsPerLine++;
                 // Once we've reached the end of a line we want to calculate the space we have to account for
-                if ((width + (spaceWidth * wordsPerLine)) >= _pageWidth)
+                if ((width + (spaceWidth * wordsPerLine)) >= pageWidth)
                 {
                     width -= GetWidth(words[i]);
                     i--;
 
                     if (_fill)
                     {
-                        double diff = _pageWidth - width;
+                        double diff = pageWidth - width;
                         spaceWidth = diff / Convert.ToDouble(wordsPerLine );
                     }
 
@@ -182,16 +216,16 @@ namespace XamarinInterview
         private void WriteLine(string[] words, int begin, int end, double spacing)
         {
             Write(words, begin, end, spacing);
-            _rowWidth = _indentWidth;
-            _row += GetCharHeight();
+            _rowWidth = indentWidth;
+            row += GetCharHeight();
         }
 
         private void Write(string[] words, int begin, int end, double spacing)
         {
             for (int i = begin; i <= end; i++)
             {
-                _graphics.DrawString(words[i], _font, XBrushes.Black,
-                        new XRect(_rowWidth, _row, GetWidth(words[i]), GetCharHeight()),
+                _graphics.DrawString(words[i], font, XBrushes.Black,
+                        new XRect(_rowWidth, row, GetWidth(words[i]), GetCharHeight()),
                         XStringFormats.TopLeft);
 
                 _rowWidth += GetWidth(words[i]);
