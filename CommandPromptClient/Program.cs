@@ -8,13 +8,18 @@ namespace CommandPromptClient
 	{
 		public static void Main (string[] args)
 		{
-			using (StreamReader file = new StreamReader (@"C:\Projects\C#\TextFormatter\document.txt")) {
-				string line;
-				TextFormatter formatter = new TextFormatter ();
-				while ((line = file.ReadLine ()) != null) {
-					formatter.IssueCommand (line);
+			if (args.Length >= 2) {
+				using (StreamReader file = new StreamReader (args [0])) {
+					string line;
+					TextFormatter formatter = new TextFormatter ();
+					while ((line = file.ReadLine ()) != null) {
+						formatter.IssueCommand (line);
+					}
+					formatter.Save (args [1]);
+					Console.WriteLine ("File written to {0}", args [1]);
 				}
-				formatter.Save (@"C:\Projects\C#\TextFormatter\document.pdf");
+			} else {
+				Console.WriteLine ("Requires 2 arguments: input file path and output file path");
 			}
 		}
 	}

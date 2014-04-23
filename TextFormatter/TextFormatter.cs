@@ -104,8 +104,8 @@ namespace XamarinInterview
             double result;
             if (String.IsNullOrWhiteSpace(c.ToString()))
             {
-                // Apparently in this library a space on it's own is 0 width, so we'll just wrap it in some 
-                // other characters and subtract them out
+				// Apparently in this library a space on it's own is 0 width, so the only thing I 
+				// could think of was to we'll just wrap it in some other characters and subtract them out
                 result = _graphics.MeasureString(String.Format("|{0}|", c.ToString()), font).Width - (2.0 * _graphics.MeasureString("|", font).Width);
             }
             else
@@ -155,6 +155,7 @@ namespace XamarinInterview
                     _style = XFontStyle.Bold;
                 break;
             default:
+				// If it starts with "." it must be a parameterized command like indent
                 if (command.StartsWith(".")) {
                     if (command.Contains (".indent")) {
                         if (_rowWidth > indentWidth)
@@ -173,22 +174,26 @@ namespace XamarinInterview
 
         private void WriteText(string text)
         {
-            // Draw the text
+			// Separate each word for filling if need be
             string[] words = text.Split(' ');
 
-            // If we're filling, first we want to count the number of words per line
-            double width = _rowWidth;
+			// We need to count the number of words per line
             int wordsPerLine = 0;
+			double width = _rowWidth;
+			// Default to the width of a normal space.  We'll recalculate this if using fill
             double spaceWidth = GetWidth(" ");
             int begin = 0;
 
+			// Loop over each word, writing out one line at a time
             for (int i = 0; i < words.Length; i++)
             {
                 width += GetWidth(words[i]);
                 wordsPerLine++;
+
                 // Once we've reached the end of a line we want to calculate the space we have to account for
                 if ((width + (spaceWidth * wordsPerLine)) >= pageWidth)
                 {
+					// We've gone too far, so back off 1 word
                     width -= GetWidth(words[i]);
                     i--;
 
@@ -199,6 +204,8 @@ namespace XamarinInterview
                     }
 
                     WriteLine(words, begin, i, spaceWidth);
+
+					// Reset for the next line
                     begin = i + 1;
                     wordsPerLine = 0;
                     width = _rowWidth;
